@@ -155,7 +155,7 @@ function articleImage(a){
 
 async function loadArticle(){
   const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+  const id = Numbers(params.get("id"));
 
   const box = document.getElementById("article");
 

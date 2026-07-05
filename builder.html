@@ -104,8 +104,9 @@ async function publishArticle(){
   } else {
     document.getElementById("status").innerText = "Article published.";
     document.getElementById("title").value = "";
-    document.getElementById("image").value = "";
-    document.getElementById("content").value = "";
+document.getElementById("image").value = "";
+document.getElementById("content").value = "";
+loadArticleList();
   }
 }
 

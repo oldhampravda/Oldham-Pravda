@@ -1,152 +1,75 @@
-ready
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Oldham Pravda</title>
-
-<style>
-body{
-margin:0;
-background:#0b2340;
-color:white;
-font-family:Arial,sans-serif;
-}
-
-header{
-background:#08192f;
-padding:30px;
-text-align:center;
-border-bottom:4px solid #c9a45d;
-}
-
-header h1{
-font-size:48px;
-color:#c9a45d;
-margin:0;
-}
-
-header p{
-color:#ddd;
-font-size:20px;
-}
-
-nav{
-background:#c9a45d;
-padding:15px;
-text-align:center;
-}
-
-nav a{
-color:#08192f;
-font-weight:bold;
-text-decoration:none;
-margin:15px;
-}
-
-.breaking{
-background:#b30000;
-padding:15px;
-text-align:center;
-font-weight:bold;
-font-size:20px;
-}
-
-.container{
-max-width:1200px;
-margin:auto;
-padding:20px;
-}
-
-.card{
-background:#122f55;
-padding:20px;
-margin-bottom:20px;
-border-left:6px solid #c9a45d;
-border-radius:8px;
-}
-
-.card h2{
-color:#c9a45d;
-margin-top:0;
-}
-
-footer{
-text-align:center;
-padding:30px;
-background:#08192f;
-color:#999;
-}
-</style>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Oldham Pravda | News • Truth • Justice</title>
+  <meta name="description" content="Oldham Pravda: independent local news, opinion, council scrutiny and community reporting for Oldham.">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
-<header>
-
-<h1>🦉 OLDHAM PRAVDA</h1>
-
-<p>News • Truth • Justice</p>
-
+<header class="top">
+  <div class="breaking">BREAKING NEWS <span>Independent local reporting from Oldham</span></div>
+  <div class="brand">
+    <img src="assets/images/logo.jpg" alt="Oldham Pravda owl logo">
+    <div>
+      <h1>Oldham Pravda</h1>
+      <p>News • Truth • Justice</p>
+    </div>
+  </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="#latest">Latest</a>
+    <a href="#council">Council Watch</a>
+    <a href="#housing">Housing</a>
+    <a href="#opinion">Opinion</a>
+    <a href="submit.html">Submit a Story</a>
+  </nav>
 </header>
 
-<nav>
+<main>
+  <section class="hero">
+    <img src="assets/images/banner.jpg" alt="Oldham Pravda skyline banner">
+    <div class="heroText">
+      <p class="tag">Oldham Council Watch</p>
+      <h2>Oldham Pravda launches its independent archive</h2>
+      <p>Facebook moves fast. A website remembers. This is where Oldham Pravda stories, opinion pieces, council coverage and community reports can be kept in one place.</p>
+      <a class="button" href="articles/oldham-pravda-launches.html">Read the first post</a>
+    </div>
+  </section>
 
-<a href="#">Home</a>
+  <section class="grid" id="latest">
+    <article class="card">
+      <p class="tag">Latest</p>
+      <h3><a href="articles/oldham-pravda-launches.html">Oldham Pravda launches online</a></h3>
+      <p>A permanent home for local stories, council scrutiny, opinion and community updates.</p>
+    </article>
+    <article class="card" id="council">
+      <p class="tag">Council Watch</p>
+      <h3>Oldham Council coverage</h3>
+      <p>Use this section for council meetings, leadership battles, spending questions, planning decisions and local accountability.</p>
+    </article>
+    <article class="card" id="housing">
+      <p class="tag">Housing</p>
+      <h3>Housing, HMOs and planning</h3>
+      <p>Track housing pressure, homelessness, HMO conversions, planning applications and street-level concerns across the borough.</p>
+    </article>
+    <article class="card" id="opinion">
+      <p class="tag">Opinion</p>
+      <h3>Opinion and comment</h3>
+      <p>Sharp editorial pieces, local arguments, political commentary and the sort of thing committees pretend not to read.</p>
+    </article>
+  </section>
 
-<a href="#">Council</a>
-
-<a href="#">Crime</a>
-
-<a href="#">Housing</a>
-
-<a href="#">Opinion</a>
-
-<a href="#">Business</a>
-
-</nav>
-
-<div class="breaking">
-
-🚨 BREAKING NEWS
-
-</div>
-
-<div class="container">
-
-<div class="card">
-
-<h2>Welcome to Oldham Pravda</h2>
-
-<p>This is the beginning of the Oldham Pravda website. Articles, investigations and local news will appear here.</p>
-
-</div>
-
-<div class="card">
-
-<h2>Latest News</h2>
-
-<p>Your latest stories will appear here.</p>
-
-</div>
-
-<div class="card">
-
-<h2>Council Watch</h2>
-
-<p>Coverage of Oldham Council and local politics.</p>
-
-</div>
-
-</div>
+  <section class="panel">
+    <h2>Publish from your phone</h2>
+    <p>Use the article builder to draft a post, then copy it into a new file on GitHub. Not magic, but close enough for a rectangle you carry around all day.</p>
+    <a class="button" href="builder.html">Open Article Builder</a>
+  </section>
+</main>
 
 <footer>
-
-© Oldham Pravda
-
+  <p>© Oldham Pravda. Oculus Noctis, Vox Veritatis.</p>
 </footer>
-
 </body>
 </html>

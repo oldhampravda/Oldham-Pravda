@@ -168,7 +168,7 @@ async function loadArticle(){
     .from("articles")
     .select("*")
     .eq("id", id)
-    .maybeSingle();
+  .maybeSingle();
 
   if(error){
     box.innerHTML = "Error loading article: " + error.message;

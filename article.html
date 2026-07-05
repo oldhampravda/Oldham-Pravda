@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Oldham Pravda Article</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+:root{
+  --navy:#06172b;
+  --navy2:#071b33;
+  --navy3:#102b4d;
+  --gold:#c9a45d;
+  --gold2:#e0ad35;
+  --white:#ffffff;
+  --muted:#c9c9c9;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:radial-gradient(circle at top,#0b2b52 0,#06172b 45%,#030b15 100%);
+  color:var(--white);
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+.topbar{
+  background:linear-gradient(90deg,#c9a45d,#e0ad35,#c9a45d);
+  color:#06172b;
+  padding:12px 28px;
+  font-weight:900;
+}
+
+header{
+  background:#06172b;
+  border-bottom:2px solid var(--gold);
+  padding:25px;
+  text-align:center;
+}
+
+.logo{
+  width:140px;
+  max-width:80%;
+}
+
+h1{
+  color:var(--gold);
+  font-family:Georgia,serif;
+  font-size:42px;
+}
+
+nav{
+  background:#071b33;
+  border-bottom:2px solid var(--gold);
+  padding:15px 25px;
+}
+
+nav a{
+  color:white;
+  text-decoration:none;
+  font-weight:900;
+  margin-right:20px;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:30px 22px;
+}
+
+.article{
+  background:#071b33;
+  border:1px solid var(--gold);
+  padding:25px;
+}
+
+.article img{
+  width:100%;
+  max-height:420px;
+  object-fit:cover;
+  margin-bottom:20px;
+  border:1px solid var(--gold);
+}
+
+.label{
+  display:inline-block;
+  background:var(--gold);
+  color:#06172b;
+  padding:6px 9px;
+  font-weight:900;
+  font-size:12px;
+  text-transform:uppercase;
+}
+
+.article h2{
+  font-family:Georgia,serif;
+  font-size:44px;
+  line-height:1.1;
+  color:white;
+}
+
+.meta{
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:1px;
+  font-size:13px;
+}
+
+.content{
+  font-size:19px;
+  line-height:1.7;
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:var(--gold);
+  border-top:2px solid var(--gold);
+  margin-top:40px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">OLDHAM PRAVDA • FULL STORY</div>
+
+<header>
+  <img class="logo" src="assets/images/logo.jpg" alt="Oldham Pravda logo">
+  <h1>OLDHAM PRAVDA</h1>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="submit.html">Submit Story</a>
+</nav>
+
+<main class="container">
+  <div id="article" class="article">Loading article...</div>
+</main>
+
+<footer>
+  OCULUS NOCTIS, VOX VERITATIS
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabaseUrl = "https://qdtjsvahswbpsdoikquf.supabase.co";
+const supabaseKey = "sb_publishable_5goegCu4fBGEffw37oxTPg_wxOsazcS";
+const db = supabase.createClient(supabaseUrl, supabaseKey);
+
+function articleImage(a){
+  return a.image && a.image.trim() !== "" ? a.image : "assets/images/banner.jpg";
+}
+
+async function loadArticle(){
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  const box = document.getElementById("article");
+
+  if(!id){
+    box.innerHTML = "No article selected.";
+    return;
+  }
+
+  const { data, error } = await db
+    .from("articles")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if(error){
+    box.innerHTML = "Error loading article: " + error.message;
+    return;
+  }
+
+  box.innerHTML = `
+    <img src="${articleImage(data)}" alt="">
+    <span class="label">${data.category || "News"}</span>
+    <h2>${data.title || "Untitled story"}</h2>
+    <p class="meta">${data.author || "Oldham Pravda"}</p>
+    <div class="content">${(data.content || "").replace(/\n/g,"<br>")}</div>
+  `;
+}
+
+loadArticle();
+</script>
+
+</body>
+</html>

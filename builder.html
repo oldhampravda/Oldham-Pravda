@@ -37,13 +37,13 @@ const supabaseKey = "sb_publishable_5goegCu4fBGEffw37oxTPg_wxOsazcS";
 const db = supabase.createClient(supabaseUrl, supabaseKey);
 
 async function publishArticle(){
-  const article = {
-Title: document.getElementById("title").value,
-Category: document.getElementById("category").value,
-Auther: document.getElementById("author").value,
-Image: document.getElementById("image").value,
-Content: document.getElementById("content").value
-  };
+ const article = {
+  Title: document.getElementById("title").value,
+  Category: document.getElementById("category").value,
+  Auther: document.getElementById("author").value,
+  Image: document.getElementById("image").value,
+  Content: document.getElementById("content").value
+};
 
   const { error } = await db.from("articles").insert([article]);
 

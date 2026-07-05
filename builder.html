@@ -1,1 +1,59 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Article Builder | Oldham Pravda</title><link rel="stylesheet" href="style.css"></head><body><header class="top"><div class="brand"><img src="assets/images/logo.jpg" alt="Oldham Pravda logo"><div><h1>Oldham Pravda</h1><p>Article Builder</p></div></div><nav><a href="index.html">Home</a><a href="submit.html">Submit a Story</a></nav></header><main><section class="panel"><h2>Article Builder</h2><p>Type the article here. Press generate. Copy the result into a new GitHub file inside the <strong>articles</strong> folder. It is not glamorous, but neither is local government.</p><label>Article title</label><input id="title" placeholder="Example: Oldham Council faces fresh questions"><label>Category</label><input id="cat" placeholder="Council Watch"><label>Author</label><input id="author" value="Oldham Pravda"><label>Article text</label><textarea id="body" rows="10" placeholder="Write or paste the article here"></textarea><button class="button" onclick="makeArticle()">Generate Article Code</button><h3>Copy this code</h3><pre class="output" id="out"></pre></section></main><script>function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}function makeArticle(){let t=document.getElementById('title').value||'Untitled';let c=document.getElementById('cat').value||'News';let a=document.getElementById('author').value||'Oldham Pravda';let b=document.getElementById('body').value||'';let paras=b.split(/\n+/).filter(Boolean).map(x=>'<p>'+esc(x)+'</p>').join('\n');let html='<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>'+esc(t)+'</title><link rel="stylesheet" href="../style.css"></head><body><header class="top"><div class="brand"><img src="../assets/images/logo.jpg" alt="Oldham Pravda logo"><div><h1>Oldham Pravda</h1><p>News • Truth • Justice</p></div></div><nav><a href="../index.html">Home</a><a href="../builder.html">Article Builder</a></nav></header><main><article class="panel"><p class="tag">'+esc(c)+'</p><h2>'+esc(t)+'</h2><p><strong>By '+esc(a)+'</strong></p>'+paras+'</article></main><footer><p>© Oldham Pravda.</p></footer></body></html>';document.getElementById('out').textContent='File name: '+slug(t)+'.html\n\n'+html}</script></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Oldham Pravda Publisher</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{background:#071b33;color:white;font-family:Arial;padding:20px}
+h1{color:#c9a45d}
+input,textarea,select{width:100%;padding:12px;margin:8px 0;background:#102b4d;color:white;border:1px solid #c9a45d}
+button{background:#c9a45d;color:#071b33;padding:14px;font-weight:bold;border:0}
+</style>
+</head>
+<body>
+
+<h1>Oldham Pravda Publisher</h1>
+
+<input id="title" placeholder="Headline">
+<select id="category">
+<option>Council Watch</option>
+<option>Housing</option>
+<option>Crime</option>
+<option>Opinion</option>
+<option>Local Business</option>
+</select>
+<input id="author" value="Oldham Pravda">
+<input id="image" placeholder="Image URL optional">
+<textarea id="content" rows="14" placeholder="Paste story here"></textarea>
+
+<button onclick="publishArticle()">Publish Article</button>
+
+<p id="status"></p>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabaseUrl = "https://qdtjsvahswbpsdoikquf.supabase.co";
+const supabaseKey = "PASTE_ANON_KEY_HERE";
+const db = supabase.createClient(supabaseUrl, supabaseKey);
+
+async function publishArticle(){
+  const article = {
+    title: document.getElementById("title").value,
+    category: document.getElementById("category").value,
+    author: document.getElementById("author").value,
+    image: document.getElementById("image").value,
+    content: document.getElementById("content").value
+  };
+
+  const { error } = await db.from("articles").insert([article]);
+
+  if(error){
+    document.getElementById("status").innerText = "Error: " + error.message;
+  } else {
+    document.getElementById("status").innerText = "Article published.";
+  }
+}
+</script>
+
+</body>
+</html>

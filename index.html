@@ -1,75 +1,78 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Oldham Pravda | News • Truth • Justice</title>
-  <meta name="description" content="Oldham Pravda: independent local news, opinion, council scrutiny and community reporting for Oldham.">
-  <link rel="stylesheet" href="style.css">
+<title>Oldham Pravda</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{margin:0;background:#071b33;color:white;font-family:Arial}
+header{padding:30px;background:#06172b;border-bottom:4px solid #c9a45d}
+h1{color:#c9a45d;font-size:46px;margin:0}
+nav{padding:15px;background:#0d2747}
+nav a{color:white;margin-right:20px;text-decoration:none;font-weight:bold}
+.breaking{background:#c9a45d;color:#071b33;padding:12px;font-weight:bold}
+.container{padding:20px;max-width:1000px;margin:auto}
+.article{background:#102b4d;border:1px solid #c9a45d;margin-bottom:20px;padding:20px}
+.article h2{color:#c9a45d;margin-top:0}
+.meta{color:#ccc;font-size:14px}
+button{background:#c9a45d;color:#071b33;padding:12px;border:0;font-weight:bold}
+</style>
 </head>
 <body>
-<header class="top">
-  <div class="breaking">BREAKING NEWS <span>Independent local reporting from Oldham</span></div>
-  <div class="brand">
-    <img src="assets/images/logo.jpg" alt="Oldham Pravda owl logo">
-    <div>
-      <h1>Oldham Pravda</h1>
-      <p>News • Truth • Justice</p>
-    </div>
-  </div>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="#latest">Latest</a>
-    <a href="#council">Council Watch</a>
-    <a href="#housing">Housing</a>
-    <a href="#opinion">Opinion</a>
-    <a href="submit.html">Submit a Story</a>
-  </nav>
+
+<div class="breaking">BREAKING NEWS • INDEPENDENT LOCAL REPORTING FROM OLDHAM</div>
+
+<header>
+<h1>OLDHAM PRAVDA</h1>
+<p>NEWS • TRUTH • JUSTICE</p>
 </header>
 
-<main>
-  <section class="hero">
-    <img src="assets/images/banner.jpg" alt="Oldham Pravda skyline banner">
-    <div class="heroText">
-      <p class="tag">Oldham Council Watch</p>
-      <h2>Oldham Pravda launches its independent archive</h2>
-      <p>Facebook moves fast. A website remembers. This is where Oldham Pravda stories, opinion pieces, council coverage and community reports can be kept in one place.</p>
-      <a class="button" href="articles/oldham-pravda-launches.html">Read the first post</a>
+<nav>
+<a href="index.html">Home</a>
+<a href="builder.html">Publish</a>
+<a href="submit.html">Submit Story</a>
+</nav>
+
+<div class="container">
+<h2>Latest Stories</h2>
+<div id="articles">Loading articles...</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabaseUrl = "https://qdtjsvahswbpsdoikquf.supabase.co";
+const supabaseKey = "sb_publishable_5goegCu4fBGEffw37oxTPg_wxOsazcS";
+const db = supabase.createClient(supabaseUrl, supabaseKey);
+
+async function loadArticles(){
+  const { data, error } = await db
+    .from("articles")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  const box = document.getElementById("articles");
+
+  if(error){
+    box.innerHTML = "Error loading articles: " + error.message;
+    return;
+  }
+
+  if(!data || data.length === 0){
+    box.innerHTML = "No articles published yet.";
+    return;
+  }
+
+  box.innerHTML = data.map(a => `
+    <div class="article">
+      ${a.image ? `<img src="${a.image}" style="width:100%;max-height:300px;object-fit:cover;">` : ""}
+      <p class="meta">${a.category || "News"} • ${a.author || "Oldham Pravda"}</p>
+      <h2>${a.title}</h2>
+      <p>${(a.content || "").replace(/\n/g,"<br>")}</p>
     </div>
-  </section>
+  `).join("");
+}
 
-  <section class="grid" id="latest">
-    <article class="card">
-      <p class="tag">Latest</p>
-      <h3><a href="articles/oldham-pravda-launches.html">Oldham Pravda launches online</a></h3>
-      <p>A permanent home for local stories, council scrutiny, opinion and community updates.</p>
-    </article>
-    <article class="card" id="council">
-      <p class="tag">Council Watch</p>
-      <h3>Oldham Council coverage</h3>
-      <p>Use this section for council meetings, leadership battles, spending questions, planning decisions and local accountability.</p>
-    </article>
-    <article class="card" id="housing">
-      <p class="tag">Housing</p>
-      <h3>Housing, HMOs and planning</h3>
-      <p>Track housing pressure, homelessness, HMO conversions, planning applications and street-level concerns across the borough.</p>
-    </article>
-    <article class="card" id="opinion">
-      <p class="tag">Opinion</p>
-      <h3>Opinion and comment</h3>
-      <p>Sharp editorial pieces, local arguments, political commentary and the sort of thing committees pretend not to read.</p>
-    </article>
-  </section>
+loadArticles();
+</script>
 
-  <section class="panel">
-    <h2>Publish from your phone</h2>
-    <p>Use the article builder to draft a post, then copy it into a new file on GitHub. Not magic, but close enough for a rectangle you carry around all day.</p>
-    <a class="button" href="builder.html">Open Article Builder</a>
-  </section>
-</main>
-
-<footer>
-  <p>© Oldham Pravda. Oculus Noctis, Vox Veritatis.</p>
-</footer>
 </body>
 </html>

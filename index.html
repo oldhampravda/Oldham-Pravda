@@ -392,6 +392,7 @@ async function loadArticles(){
   const main = data[0];
 
   featured.innerHTML = `
+<a href="article.html?id=${main.id}" style="text-decoration:none;color:white;">
     <div class="featured-card">
       <img src="${articleImage(main)}" alt="">
       <div class="featured-text">
@@ -399,20 +400,23 @@ async function loadArticles(){
         <h2>${main.title || "Untitled story"}</h2>
         <p>${cleanText(main.content,500)}</p>
         <p class="meta">${main.author || "Oldham Pravda"}</p>
-      </div>
+       </div>
     </div>
-  `;
+</a>
+`;
 
   box.innerHTML = data.slice(1).map(a => `
-    <article class="card">
-      <img src="${articleImage(a)}" alt="">
-      <div class="card-body">
-        <span class="label">${a.category || "News"}</span>
-        <h3>${a.title || "Untitled story"}</h3>
-        <p>${cleanText(a.content,180)}...</p>
-        <p class="meta">${a.author || "Oldham Pravda"}</p>
-      </div>
-    </article>
+   <a href="article.html?id=${a.id}" style="text-decoration:none;color:white;">
+  <article class="card">
+    <img src="${articleImage(a)}" alt="">
+    <div class="card-body">
+      <span class="label">${a.category || "News"}</span>
+      <h3>${a.title || "Untitled story"}</h3>
+      <p>${cleanText(a.content,180)}...</p>
+      <p class="meta">${a.author || "Oldham Pravda"}</p>
+    </div>
+  </article>
+</a> 
   `).join("");
 }
 

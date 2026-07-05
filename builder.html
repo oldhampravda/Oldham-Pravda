@@ -1,20 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Oldham Pravda Publisher</title>
+<title>Oldham Pravda Admin</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body{background:#071b33;color:white;font-family:Arial;padding:20px}
-h1{color:#c9a45d}
+h1,h2{color:#c9a45d}
 input,textarea,select{width:100%;padding:12px;margin:8px 0;background:#102b4d;color:white;border:1px solid #c9a45d}
-button{background:#c9a45d;color:#071b33;padding:14px;font-weight:bold;border:0}
+button{background:#c9a45d;color:#071b33;padding:14px;margin-top:10px;font-weight:bold;border:0}
+#publisher{display:none}
 </style>
 </head>
 <body>
 
-<h1>Oldham Pravda Publisher</h1>
+<h1>Oldham Pravda Admin</h1>
+
+<div id="login">
+<h2>Login</h2>
+<input id="email" type="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<p id="loginStatus"></p>
+</div>
+
+<div id="publisher">
+<h2>Publish Article</h2>
 
 <input id="title" placeholder="Headline">
+
 <select id="category">
 <option>Council Watch</option>
 <option>Housing</option>
@@ -22,13 +35,16 @@ button{background:#c9a45d;color:#071b33;padding:14px;font-weight:bold;border:0}
 <option>Opinion</option>
 <option>Local Business</option>
 </select>
+
 <input id="author" value="Oldham Pravda">
 <input id="image" placeholder="Image URL optional">
 <textarea id="content" rows="14" placeholder="Paste story here"></textarea>
 
 <button onclick="publishArticle()">Publish Article</button>
+<button onclick="logout()">Logout</button>
 
 <p id="status"></p>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -36,14 +52,47 @@ const supabaseUrl = "https://qdtjsvahswbpsdoikquf.supabase.co";
 const supabaseKey = "sb_publishable_5goegCu4fBGEffw37oxTPg_wxOsazcS";
 const db = supabase.createClient(supabaseUrl, supabaseKey);
 
+async function login(){
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { data, error } = await db.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  if(error){
+    document.getElementById("loginStatus").innerText = "Login error: " + error.message;
+    return;
+  }
+
+  document.getElementById("login").style.display = "none";
+  document.getElementById("publisher").style.display = "block";
+}
+
+async function logout(){
+  await db.auth.signOut();
+  document.getElementById("publisher").style.display = "none";
+  document.getElementById("login").style.display = "block";
+}
+
+async function checkLogin(){
+  const { data } = await db.auth.getSession();
+
+  if(data.session){
+    document.getElementById("login").style.display = "none";
+    document.getElementById("publisher").style.display = "block";
+  }
+}
+
 async function publishArticle(){
- const article = {
-  title: document.getElementById("title").value,
-  category: document.getElementById("category").value,
-  author: document.getElementById("author").value,
-  image: document.getElementById("image").value,
-  content: document.getElementById("content").value
-};
+  const article = {
+    title: document.getElementById("title").value,
+    category: document.getElementById("category").value,
+    author: document.getElementById("author").value,
+    image: document.getElementById("image").value,
+    content: document.getElementById("content").value
+  };
 
   const { error } = await db.from("articles").insert([article]);
 
@@ -51,8 +100,13 @@ async function publishArticle(){
     document.getElementById("status").innerText = "Error: " + error.message;
   } else {
     document.getElementById("status").innerText = "Article published.";
+    document.getElementById("title").value = "";
+    document.getElementById("image").value = "";
+    document.getElementById("content").value = "";
   }
 }
+
+checkLogin();
 </script>
 
 </body>

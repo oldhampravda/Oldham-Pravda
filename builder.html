@@ -113,7 +113,33 @@ document.getElementById("content").value = "";
 loadArticleList();
   }
 }
+async function loadArticleList(){
 
+  const list = document.getElementById("articleList");
+
+  const { data, error } = await db
+    .from("articles")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if(error){
+    list.innerHTML = "Error loading articles: " + error.message;
+    return;
+  }
+
+  if(!data || data.length === 0){
+    list.innerHTML = "No articles published yet.";
+    return;
+  }
+
+  list.innerHTML = data.map(a => `
+    <div style="border:1px solid #c9a45d;padding:12px;margin:10px 0;background:#102b4d;">
+      <strong>${a.title || "Untitled story"}</strong><br>
+      <small>${a.category || "News"} • ${a.author || "Oldham Pravda"}</small><br>
+      <a href="article.html?id=${a.id}" target="_blank" style="color:#c9a45d;">View article</a>
+    </div>
+  `).join("");
+}
 checkLogin();
 </script>
 
